@@ -1,5 +1,6 @@
 #include "OrderBook.h"
 #include "Timer.h"
+#include<iostream>
 
 int OrderBook::getMinAsk(){
     while (minAsk < 120 && asks[minAsk].isEmpty()){
@@ -81,4 +82,33 @@ void OrderBook::CancelOrder(int id){
 }
 
 void OrderBook::printOrderBook(){
+    cout<<"--------------------- Bids -------------------- "<<'\n';
+    int bestBid = getMaxBid();
+    for(int p = bestBid;p>=90;p--){
+        int accumulatedVolume = 0;
+        int st = bids[p].getFront();
+        int en = bids[p].getEnd();
+        while(st!=en){
+            accumulatedVolume += (bids[p].getElement(st)).volume;
+            st = (st + 1)%64;
+        }
+
+        if(accumulatedVolume > 0){
+            cout<<"BID PRICE : "<<p<<" "<<"Volume : "<<accumulatedVolume<<'\n';
+        }
+    }
+    cout<<"--------------------- Asks -------------------- "<<'\n';
+    int bestAsk = getMinAsk();
+    for(int p = bestAsk;p<=120;p++){
+        int accumulatedVolume = 0;
+        int st = asks[p].getFront();
+        int en = asks[p].getEnd();
+        while(st!=en){
+            accumulatedVolume += (asks[p].getElement(st)).volume;
+            st = (st + 1)%64;
+        }
+        if(accumulatedVolume > 0){
+            cout<<"ASK PRICE : "<<p<<" "<<"Volume : "<<accumulatedVolume<<'\n';
+        }
+    }
 }

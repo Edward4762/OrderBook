@@ -10,15 +10,7 @@ class RingBuffer
     alignas(64) atomic<int> front{0};
     alignas(64) atomic<int> end{0};
 
-    int getFront()
-    {
-        return front.load(memory_order_acquire);
-    }
-    int getEnd()
-    {
-        return end.load(memory_order_acquire);
-    }
-
+    
     void incrementFront()
     {
         front.store((front.load(memory_order_acquire) + 1) % SIZE, memory_order_release);
@@ -31,8 +23,18 @@ class RingBuffer
     {
         end.store((end.load(memory_order_acquire) + 1) % SIZE, memory_order_release);
     }
+    
+    public:
+    int getFront()
+    {
+        return front.load(memory_order_acquire);
+    }
 
-public:
+    int getEnd()
+    {
+        return end.load(memory_order_acquire);
+    }
+    
     bool isEmpty()
     {
         return getFront() == getEnd();
@@ -53,6 +55,10 @@ public:
         }
         updFront = getFront();
         return value[updFront];
+    }
+
+    T getElement(int index){
+        return value[index];
     }
 
     void popFront()
