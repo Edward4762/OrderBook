@@ -1,4 +1,5 @@
 #pragma once
+#include<string>
 
 struct Order
 {
@@ -8,10 +9,15 @@ struct Order
     bool isBuy;
 };
 
-struct OrderQueue
-{
+struct OrderSymbol{
+    std::string Symbol;
     Order order;
     bool isAdd;
+};
+
+struct OrderQueue
+{
+    OrderSymbol order;
 };
 
 struct LookupEntry
